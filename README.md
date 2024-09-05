@@ -1,6 +1,20 @@
-# AngularExpenseTracker
+# BudgetTracker
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.7.
+
+# Note
+
+1. A folder name like `angular-expense-tracker` will be ignored by the
+   by the path system when trying to build a project that
+   will not be able to load the necessary scripts.
+
+2. Configure the `baseHref` and `outputPath` properties in the `angular.json`
+   file to make sure that the path to the location of all scripts from index.html is correct. For example : `“outputPath": “dist”, ‘baseHref’: “/dist/browser/”,`
+
+3. Some code cannot be transcribed by polyfills because it is incorrect. For example:
+   `ERROR Syntax error: JSON.parse: unexpected end of data on line 1 of column 1 of Angular 48 getItem JSON data ... <anonymous> main-XFBMJ64V.js:7:29593`. The problem here was that getItem was trying to return an invalid value, so fixing this error solved the problem.
+
+4. Add separate `baseHref` for deploy. If your url address to web page is `https://maurvick.github.io/   angular-expense-tracker/`, use `/angular-expense-tracker/` as your `baseHref`.
 
 ## Development server
 
