@@ -1,0 +1,46 @@
+/* Individual budget card styling */
+.budget-card {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover effect for the budget card */
+.budget-card:hover {
+  border: 2px solid slategrey;
+}
+
+.budget-card.over-budget {
+  border: 2px solid slategrey;
+}
+
+.budget-title {
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+}
+
+.budget-amount {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.budget-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.budget-actions button {
+  background-color: transparent;
+  border: 1px solid #007bff;
+  color: #007bff;
+  border-radius: 8px 16px;
+  cursor: pointer;
+}
+
+.budget-actions button:hover {
+  background-color: #007bff;
+  color: white;
+}
