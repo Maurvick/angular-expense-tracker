@@ -21,7 +21,7 @@ export class BudgetService {
   constructor(private localStorageService: LocalStorageService) {
     const storedBudgets = this.localStorageService.getItem<IBudget[]>(
       'budgets',
-      []
+      '[]'
     );
     this.budgetsSubject.next(storedBudgets);
     this.$budget.subscribe((budgets) => {

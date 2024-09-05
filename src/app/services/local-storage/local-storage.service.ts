@@ -4,7 +4,8 @@ import { Injectable } from '@angular/core';
 export class LocalStorageService {
   constructor() {}
 
-  getItem<T>(key: string, defaultValue: any): T {
+  // defaultValue could be only a string otherwise it will throw an error
+  getItem<T>(key: string, defaultValue: string): T {
     return JSON.parse(localStorage.getItem(key) ?? defaultValue);
   }
 
