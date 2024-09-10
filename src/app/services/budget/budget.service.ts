@@ -2,14 +2,18 @@ import { BehaviorSubject } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 
-import { IBudget } from '../../budget.model';
 import { LocalStorageService } from '../local-storage/local-storage.service';
+import { IBudget } from './budget.model';
+import { IExpense } from './expense.model';
+
+export const UNCATEGORIZED_BUDGET_NAME = 'Uncategorized';
 
 @Injectable({ providedIn: 'root' })
 export class BudgetService {
   private budgetsSubject = new BehaviorSubject<IBudget[]>([]);
-  // Allow to subscribe to $budget observable to get latest value
-  public $budget = this.budgetsSubject.asObservable();
+  public $budgets = this.budgetsSubject.asObservable();
+  private expensesSubject = new BehaviorSubject<IExpense[]>([]);
+  public $expenses = this.expensesSubject.asObservable();
 
   private get budgets(): IBudget[] {
     return this.budgetsSubject.getValue();
@@ -17,34 +21,69 @@ export class BudgetService {
   private set budgets(budgets: IBudget[]) {
     this.budgetsSubject.next(budgets);
   }
+  private get expenses(): IExpense[] {
+    return this.expensesSubject.getValue();
+  }
+  private set expenses(expenses: IExpense[]) {
+    this.expensesSubject.next(expenses);
+  }
 
   constructor(private localStorageService: LocalStorageService) {
     const storedBudgets = this.localStorageService.getItem<IBudget[]>(
       'budgets',
       '[]'
     );
-    this.budgetsSubject.next(storedBudgets);
-    this.$budget.subscribe((budgets) => {
+    const storedExpenses = this.localStorageService.getItem<IExpense[]>(
+      'expenses',
+      '[]'
+    );
+    this.budgets = storedBudgets;
+    this.$budgets.subscribe((budgets) => {
       this.localStorageService.setItem('budgets', budgets);
+    });
+    this.expenses = storedExpenses;
+    this.$expenses.subscribe((expenses) => {
+      this.localStorageService.setItem('expenses', expenses);
     });
   }
 
-  addBudget(budget: IBudget): void {
-    const currentBudgets = this.budgetsSubject.getValue();
+  addBudget(newBudget: IBudget): void {
     if (
-      currentBudgets.some(
-        (existingBudget) => existingBudget.name === budget.name
+      this.budgets.some(
+        (existingBudget) => existingBudget.name === newBudget.name
       )
     ) {
       alert('Budget already exists');
       return;
     }
-    const updatedBudgets = [...currentBudgets, budget];
-    this.budgets = updatedBudgets;
+    this.budgets = [...this.budgets, newBudget];
   }
 
-  addExpense() {}
-  removeBudget() {}
-  removeExpense() {}
-  getBudgetExpenses() {}
+  addExpense(newExpense: IExpense): void {
+    this.expenses = [...this.expenses, newExpense];
+  }
+
+  removeBudget(removedBudget: IBudget): void {
+    this.budgets = this.budgets.filter(
+      (budget) => budget.id !== removedBudget.id
+    );
+    this.expenses = this.expenses.map((expense) => {
+      if (expense.budgetId === removedBudget.id) {
+        return { ...expense, budgetId: UNCATEGORIZED_BUDGET_NAME } as IExpense;
+      }
+      return expense;
+    });
+  }
+
+  removeExpense(removedExpense: IExpense): void {
+    this.expenses = this.expenses.filter((expense) =>
+      expense.id !== removedExpense.id
+        ? expense
+        : ({ ...expense, budgetId: UNCATEGORIZED_BUDGET_NAME } as IExpense)
+    );
+  }
+
+  getBudgetExpenses(id: string): IExpense[] {
+    return this.expenses.filter((expense) => expense.budgetId === id);
+  }
 }
