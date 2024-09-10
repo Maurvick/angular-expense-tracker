@@ -1,8 +1,10 @@
 <div class="container">
   <div class="stack">
     <h1>Budgets</h1>
-    <button (click)="showAddBudgetModal()">Add Budget</button>
-    <button>Add Expense</button>
+    <button class="button" (click)="showAddBudgetModal()">Add Budget</button>
+    <button class="button-outlined" (click)="showAddExpenseModal()">
+      Add Expense
+    </button>
   </div>
   <div class="budget-cards">
     <div *ngFor="let budget of budgets">
@@ -10,14 +12,24 @@
         [name]="budget.name"
         [amount]="budget.amount"
         [max]="budget.max"
+        (openAddExpense)="showAddExpenseModal()"
+        (openViewExpenses)="showViewExpensesModal()"
       ></app-budget-card>
     </div>
-    <!-- <div class="message" *ngIf="budgets.length === 0">
+    <div class="message" *ngIf="budgets.length === 0">
       <p>No budgets have been added yet.</p>
-    </div> -->
+    </div>
   </div>
   <app-add-budget-modal
     *ngIf="isAddBudgetModalVisible"
     (close)="closeAddBudgetModal()"
   ></app-add-budget-modal>
+  <app-add-expense-modal
+    *ngIf="isAddExpenseModalVisible"
+    (close)="closeAddExpenseModal()"
+  ></app-add-expense-modal>
+  <app-view-expense-modal
+    *ngIf="isViewExpensesModalVisible"
+    (close)="closeViewExpensesModal()"
+  ></app-view-expense-modal>
 </div>

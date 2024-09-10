@@ -2,9 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { IBudget } from './budget.model';
 import { BudgetCardComponent } from './components/budget-card/budget-card.component';
-import { AddBudgetModalComponent } from './components/modal/add-budget-modal/add-budget-modal.component';
+import { AddBudgetModalComponent } from './components/modals/add-budget-modal/add-budget-modal.component';
+import { AddExpenseModalComponent } from './components/modals/add-expense-modal/add-expense-modal.component';
+import { ViewExpenseModal } from './components/modals/view-expenses-modal/view-expense-modal.component';
+import { IBudget } from './services/budget/budget.model';
 import { BudgetService } from './services/budget/budget.service';
 
 @Component({
@@ -15,18 +17,21 @@ import { BudgetService } from './services/budget/budget.service';
     CommonModule,
     BudgetCardComponent,
     AddBudgetModalComponent,
+    AddExpenseModalComponent,
+    ViewExpenseModal,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  title = 'angular-expense-tracker';
   budgets: IBudget[] = [];
 
   isAddBudgetModalVisible: boolean = false;
+  isAddExpenseModalVisible: boolean = false;
+  isViewExpensesModalVisible: boolean = false;
 
   constructor(private budgetService: BudgetService) {
-    this.budgetService.$budget.subscribe((budgets) => {
+    this.budgetService.$budgets.subscribe((budgets) => {
       this.budgets = budgets;
     });
   }
@@ -37,5 +42,21 @@ export class AppComponent {
 
   closeAddBudgetModal() {
     this.isAddBudgetModalVisible = false;
+  }
+
+  showAddExpenseModal() {
+    this.isAddExpenseModalVisible = true;
+  }
+
+  closeAddExpenseModal() {
+    this.isAddExpenseModalVisible = false;
+  }
+
+  showViewExpensesModal() {
+    this.isViewExpensesModalVisible = true;
+  }
+
+  closeViewExpensesModal() {
+    this.isViewExpensesModalVisible = false;
   }
 }
