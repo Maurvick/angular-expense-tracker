@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { generateUniqueId } from '../../../../utils/generateUniqueId';
@@ -13,7 +13,6 @@ import { BudgetService } from '../../../services/budget/budget.service';
   standalone: true,
 })
 export class AddBudgetModalComponent {
-  @Input() isVisible: boolean = false;
   @Output() close = new EventEmitter<void>();
 
   budgetName: string = '';
