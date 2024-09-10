@@ -1,6 +1,24 @@
 <div class="budget-card">
   <div class="card-body">
     <h3 class="card-title">{{ name }}</h3>
-    <p class="card-currency">{{ formatAmount() }} / {{ max }}</p>
+    <p class="card-currency">
+      {{ formatCurrency(amount) }} / {{ formatCurrency(max) }}
+    </p>
+    <div class="other">
+      <button
+        class="button-outlined"
+        (click)="openAddExpenseModal()"
+        (close)="closeModal()"
+      >
+        Add Expense
+      </button>
+      <button
+        class="button-outlined"
+        (click)="openViewExpensesModal()"
+        (close)="closeModal()"
+      >
+        View Expenses
+      </button>
+    </div>
   </div>
 </div>
