@@ -11,9 +11,9 @@ export const UNCATEGORIZED_BUDGET_NAME = 'Uncategorized';
 @Injectable({ providedIn: 'root' })
 export class BudgetService {
   private budgetsSubject = new BehaviorSubject<IBudget[]>([]);
-  public $budgets = this.budgetsSubject.asObservable();
+  public budgets$ = this.budgetsSubject.asObservable();
   private expensesSubject = new BehaviorSubject<IExpense[]>([]);
-  public $expenses = this.expensesSubject.asObservable();
+  public expenses$ = this.expensesSubject.asObservable();
 
   private get budgets(): IBudget[] {
     return this.budgetsSubject.getValue();
@@ -38,11 +38,11 @@ export class BudgetService {
       '[]'
     );
     this.budgets = storedBudgets;
-    this.$budgets.subscribe((budgets) => {
+    this.budgets$.subscribe((budgets) => {
       this.localStorageService.setItem('budgets', budgets);
     });
     this.expenses = storedExpenses;
-    this.$expenses.subscribe((expenses) => {
+    this.expenses$.subscribe((expenses) => {
       this.localStorageService.setItem('expenses', expenses);
     });
   }
@@ -77,10 +77,14 @@ export class BudgetService {
 
   removeExpense(removedExpense: IExpense): void {
     this.expenses = this.expenses.filter((expense) =>
-      expense.id !== removedExpense.id
+      expense.expenseId !== removedExpense.expenseId
         ? expense
         : ({ ...expense, budgetId: UNCATEGORIZED_BUDGET_NAME } as IExpense)
     );
+  }
+
+  getBudgets(): IBudget[] {
+    return this.budgets;
   }
 
   getBudgetExpenses(id: string): IExpense[] {
