@@ -7,7 +7,10 @@ import { AddBudgetModalComponent } from './components/modals/add-budget-modal/ad
 import { AddExpenseModalComponent } from './components/modals/add-expense-modal/add-expense-modal.component';
 import { ViewExpenseModal } from './components/modals/view-expenses-modal/view-expense-modal.component';
 import { IBudget } from './services/budget/budget.model';
-import { BudgetService } from './services/budget/budget.service';
+import {
+  BudgetService,
+  UNCATEGORIZED_BUDGET_ID,
+} from './services/budget/budget.service';
 
 @Component({
   selector: 'app-root',
@@ -30,33 +33,46 @@ export class AppComponent {
   isAddExpenseModalVisible: boolean = false;
   isViewExpensesModalVisible: boolean = false;
 
-  constructor(private budgetService: BudgetService) {
-    this.budgetService.$budgets.subscribe((budgets) => {
+  addExpenseModalBudgetId: string = '';
+  viewExpenseModalBudgetId: string = '';
+
+  UNCATEGORIZED_BUDGET_ID = UNCATEGORIZED_BUDGET_ID;
+
+  constructor(public budgetService: BudgetService) {
+    this.budgetService.budgets$.subscribe((budgets) => {
       this.budgets = budgets;
     });
   }
 
-  showAddBudgetModal() {
+  showAddBudgetModal(): void {
     this.isAddBudgetModalVisible = true;
   }
 
-  closeAddBudgetModal() {
+  closeAddBudgetModal(): void {
     this.isAddBudgetModalVisible = false;
   }
 
-  showAddExpenseModal() {
+  showAddExpenseModal(budgetId: string): void {
     this.isAddExpenseModalVisible = true;
+    this.addExpenseModalBudgetId = budgetId;
   }
 
-  closeAddExpenseModal() {
+  closeAddExpenseModal(): void {
     this.isAddExpenseModalVisible = false;
   }
 
-  showViewExpensesModal() {
+  showViewExpensesModal(budgetId: string): void {
     this.isViewExpensesModalVisible = true;
+    this.viewExpenseModalBudgetId = budgetId;
   }
 
-  closeViewExpensesModal() {
+  closeViewExpensesModal(): void {
     this.isViewExpensesModalVisible = false;
+  }
+
+  calculateTotalExpenses(budgetId: string): number {
+    return this.budgetService
+      .getBudgetExpenses(budgetId)
+      .reduce((total, expense) => total + expense.amount, 0);
   }
 }

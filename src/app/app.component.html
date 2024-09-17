@@ -2,7 +2,10 @@
   <div class="stack">
     <h1>Budgets</h1>
     <button class="button" (click)="showAddBudgetModal()">Add Budget</button>
-    <button class="button-outlined" (click)="showAddExpenseModal()">
+    <button
+      class="button-outlined"
+      (click)="showAddExpenseModal(UNCATEGORIZED_BUDGET_ID)"
+    >
       Add Expense
     </button>
   </div>
@@ -10,16 +13,18 @@
     <div *ngFor="let budget of budgets">
       <app-budget-card
         [name]="budget.name"
-        [amount]="budget.amount"
+        [amount]="calculateTotalExpenses(budget.id)"
         [max]="budget.max"
-        (openAddExpense)="showAddExpenseModal()"
-        (openViewExpenses)="showViewExpensesModal()"
+        (openAddExpense)="showAddExpenseModal(budget.id)"
+        (openViewExpenses)="showViewExpensesModal(budget.id)"
       ></app-budget-card>
     </div>
     <div class="message" *ngIf="budgets.length === 0">
       <p>No budgets have been added yet.</p>
     </div>
   </div>
+  <!--Since *ngIf removes the modal from the DOM when not visible, 
+  Angular doesn't need to manage its lifecycle (change detection, memory usage) while it's hidden.-->
   <app-add-budget-modal
     *ngIf="isAddBudgetModalVisible"
     (close)="closeAddBudgetModal()"
@@ -27,9 +32,15 @@
   <app-add-expense-modal
     *ngIf="isAddExpenseModalVisible"
     (close)="closeAddExpenseModal()"
+    [defaultBudgetId]="addExpenseModalBudgetId"
   ></app-add-expense-modal>
   <app-view-expense-modal
     *ngIf="isViewExpensesModalVisible"
     (close)="closeViewExpensesModal()"
+    [defaultBudgetId]="viewExpenseModalBudgetId"
   ></app-view-expense-modal>
+  <!--TODO: Sorting-->
+  <!--TODO: Archive-->
+  <!--TODO: Add uncategorized budget card-->
+  <!--TODO: Add total budget card-->
 </div>
