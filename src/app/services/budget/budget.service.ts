@@ -6,7 +6,7 @@ import { LocalStorageService } from '../local-storage/local-storage.service';
 import { IBudget } from './budget.model';
 import { IExpense } from './expense.model';
 
-export const UNCATEGORIZED_BUDGET_NAME = 'Uncategorized';
+export const UNCATEGORIZED_BUDGET_ID = 'Uncategorized';
 
 @Injectable({ providedIn: 'root' })
 export class BudgetService {
@@ -63,23 +63,21 @@ export class BudgetService {
     this.expenses = [...this.expenses, newExpense];
   }
 
-  removeBudget(removedBudget: IBudget): void {
-    this.budgets = this.budgets.filter(
-      (budget) => budget.id !== removedBudget.id
-    );
+  removeBudgetById(id: string): void {
+    this.budgets = this.budgets.filter((budget) => budget.id !== id);
     this.expenses = this.expenses.map((expense) => {
-      if (expense.budgetId === removedBudget.id) {
-        return { ...expense, budgetId: UNCATEGORIZED_BUDGET_NAME } as IExpense;
+      if (expense.budgetId === id) {
+        return { ...expense, budgetId: UNCATEGORIZED_BUDGET_ID } as IExpense;
       }
       return expense;
     });
   }
 
-  removeExpense(removedExpense: IExpense): void {
-    this.expenses = this.expenses.filter((expense) =>
-      expense.expenseId !== removedExpense.expenseId
+  removeExpense(expense: IExpense): void {
+    this.expenses = this.expenses.filter((e) =>
+      e.expenseId !== expense.expenseId
         ? expense
-        : ({ ...expense, budgetId: UNCATEGORIZED_BUDGET_NAME } as IExpense)
+        : ({ ...expense, budgetId: UNCATEGORIZED_BUDGET_ID } as IExpense)
     );
   }
 
@@ -89,5 +87,9 @@ export class BudgetService {
 
   getBudgetExpenses(id: string): IExpense[] {
     return this.expenses.filter((expense) => expense.budgetId === id);
+  }
+
+  getBudgetById(id: string): IBudget | undefined {
+    return this.budgets.find((budget) => budget.id === id);
   }
 }
