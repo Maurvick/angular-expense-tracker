@@ -1,5 +1,5 @@
 export interface IExpense {
-  id: string;
+  expenseId: string;
   budgetId: string;
   amount: number;
   description: string;
