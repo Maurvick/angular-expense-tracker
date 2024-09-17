@@ -1,0 +1,35 @@
+<div class="modal">
+  <div class="modal-content">
+    <form>
+      <div class="modal-header">
+        <div class="stack">
+          <span class="modal-title">Expenses Of {{ budget.name }} </span>
+          <button
+            class="button-outlined"
+            (click)="removeBudget(budget.id); closeModal()"
+          >
+            Delete Budget
+          </button>
+        </div>
+
+        <span class="close-btn" (click)="closeModal()" (keypress)="closeModal()"
+          >&times;</span
+        >
+        <hr />
+      </div>
+
+      <div class="modal-body">
+        <div class="column" *ngFor="let expense of expenses">
+          <div>{{ expense.description }}</div>
+          <div>{{ formatCurrency(expense.amount) }}</div>
+          <button (click)="removeExpense(expense)">&times;</button>
+        </div>
+        <hr />
+      </div>
+
+      <!-- <div class="modal-footer">
+        <button class="button-outlined">Delete</button>
+      </div> -->
+    </form>
+  </div>
+</div>
