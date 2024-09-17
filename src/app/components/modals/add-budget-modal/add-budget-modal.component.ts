@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { generateUniqueId } from '../../../../utils/generateUniqueId';
+import { generateUniqueIdV1 } from '../../../../utils/generateUniqueId';
 import { BudgetService } from '../../../services/budget/budget.service';
 
 @Component({
@@ -27,9 +27,8 @@ export class AddBudgetModalComponent {
   onSubmit() {
     if (this.budgetName && this.budgetMax) {
       this.budgetService.addBudget({
-        id: generateUniqueId(),
+        id: generateUniqueIdV1(),
         name: this.budgetName,
-        amount: 0,
         max: Number(this.budgetMax),
       });
       this.closeModal();
