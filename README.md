@@ -2,6 +2,10 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.7.
 
+# Live Demo
+
+https://maurvick.github.io/angular-expense-tracker/
+
 # Note
 
 1. A folder name like `angular-expense-tracker` will be ignored by the
