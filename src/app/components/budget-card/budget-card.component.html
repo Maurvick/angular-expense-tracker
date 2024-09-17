@@ -1,10 +1,13 @@
+<!--TODO: Add outline for exceeding budget-->
+<!--TODO: Add progress bar animation-->
 <div class="budget-card">
   <div class="card-body">
     <h3 class="card-title">{{ name }}</h3>
     <p class="card-currency">
       {{ formatCurrency(amount) }} / {{ formatCurrency(max) }}
     </p>
-    <div class="other">
+    <app-progress-bar [value]="amount" [max]="max"></app-progress-bar>
+    <div class="align-left">
       <button
         class="button-outlined"
         (click)="openAddExpenseModal()"

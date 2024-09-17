@@ -1,32 +1,39 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { currencyFormatter } from '../../../utils/currencyFormatter';
+import { ProgressBarComponent } from '../ui/progress-bar/progress-bar.component';
 
 @Component({
   selector: 'app-budget-card',
   standalone: true,
-  imports: [],
+  imports: [ProgressBarComponent],
   templateUrl: './budget-card.component.html',
   styleUrl: './budget-card.component.css',
 })
 export class BudgetCardComponent {
-  @Input() name: string = '';
-  @Input({ required: true }) amount: number = 0;
-  @Input({ required: true }) max: number = 0;
+  @Input({ required: true }) name: string = '';
+  @Input({
+    required: true,
+  })
+  amount: number = 0;
+  @Input({
+    required: true,
+  })
+  max: number = 0;
 
   @Output() openAddExpense = new EventEmitter();
   @Output() openViewExpenses = new EventEmitter();
   @Output() close = new EventEmitter();
 
-  openAddExpenseModal() {
+  openAddExpenseModal(): void {
     this.openAddExpense.emit();
   }
 
-  openViewExpensesModal() {
+  openViewExpensesModal(): void {
     this.openViewExpenses.emit();
   }
 
-  closeModal() {
+  closeModal(): void {
     this.close.emit();
   }
 
