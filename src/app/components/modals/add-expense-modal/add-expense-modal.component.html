@@ -1,0 +1,30 @@
+<div class="modal">
+  <div class="modal-content">
+    <form>
+      <div class="modal-header">
+        <span class="modal-title">Add Expense</span>
+        <span class="close-btn" (click)="closeModal()" (keypress)="closeModal()"
+          >&times;</span
+        >
+        <hr />
+      </div>
+      <div class="modal-body">
+        <label for="description">Description</label>
+        <input type="text" [(ngModel)]="description" name="description" />
+        <label for="amount">Amount</label>
+        <input type="number" [(ngModel)]="amount" name="amount" />
+        <label for="budget">Budget</label>
+        <select [(ngModel)]="defaultBudgetId" name="budget">
+          <option>Uncategorized</option>
+          <option *ngFor="let budget of budgets" [value]="budget.id">
+            {{ budget.name }}
+          </option>
+        </select>
+        <hr />
+      </div>
+      <div class="modal-footer">
+        <button class="button-outlined" (click)="onSubmit()">Add</button>
+      </div>
+    </form>
+  </div>
+</div>
