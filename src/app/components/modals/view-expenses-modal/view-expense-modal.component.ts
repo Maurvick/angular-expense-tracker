@@ -27,7 +27,11 @@ export class ViewExpenseModal implements OnInit {
   // Ensuring everything loads properly
   ngOnInit(): void {
     this.budget = this.identifyBudget();
-    this.expenses = this.budgetService.getBudgetExpenses(this.defaultBudgetId);
+    this.budgetService
+      .trackAllExpensesByBudgetId(this.defaultBudgetId)
+      .subscribe((expenses) => {
+        this.expenses = expenses;
+      });
   }
 
   closeModal(): void {
@@ -38,8 +42,8 @@ export class ViewExpenseModal implements OnInit {
     this.budgetService.removeBudgetById(id);
   }
 
-  removeExpense(expense: IExpense): void {
-    this.budgetService.removeExpense(expense);
+  removeExpense(id: string): void {
+    this.budgetService.removeExpenseById(id);
   }
 
   identifyBudget(): IBudget | IUncategorizedBudget {

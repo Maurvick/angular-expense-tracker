@@ -22,14 +22,10 @@
         <div class="column" *ngFor="let expense of expenses">
           <div>{{ expense.description }}</div>
           <div>{{ formatCurrency(expense.amount) }}</div>
-          <button (click)="removeExpense(expense)">&times;</button>
+          <button (click)="removeExpense(expense.id)">&times;</button>
         </div>
         <hr />
       </div>
-
-      <!-- <div class="modal-footer">
-        <button class="button-outlined">Delete</button>
-      </div> -->
     </form>
   </div>
 </div>

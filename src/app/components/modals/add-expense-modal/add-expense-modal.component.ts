@@ -33,7 +33,7 @@ export class AddExpenseModalComponent {
   onSubmit(): void {
     if (this.description && this.amount && this.defaultBudgetId) {
       this.budgetService.addExpense({
-        expenseId: generateUniqueIdV1(),
+        id: generateUniqueIdV1(),
         description: this.description,
         amount: Number(this.amount),
         budgetId: this.defaultBudgetId,

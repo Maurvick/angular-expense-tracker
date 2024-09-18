@@ -1,4 +1,4 @@
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 
@@ -11,9 +11,9 @@ export const UNCATEGORIZED_BUDGET_ID = 'Uncategorized';
 @Injectable({ providedIn: 'root' })
 export class BudgetService {
   private budgetsSubject = new BehaviorSubject<IBudget[]>([]);
-  public budgets$ = this.budgetsSubject.asObservable();
+  private $budgets = this.budgetsSubject.asObservable();
   private expensesSubject = new BehaviorSubject<IExpense[]>([]);
-  public expenses$ = this.expensesSubject.asObservable();
+  private $expenses = this.expensesSubject.asObservable();
 
   private get budgets(): IBudget[] {
     return this.budgetsSubject.getValue();
@@ -38,11 +38,11 @@ export class BudgetService {
       '[]'
     );
     this.budgets = storedBudgets;
-    this.budgets$.subscribe((budgets) => {
+    this.$budgets.subscribe((budgets) => {
       this.localStorageService.setItem('budgets', budgets);
     });
     this.expenses = storedExpenses;
-    this.expenses$.subscribe((expenses) => {
+    this.$expenses.subscribe((expenses) => {
       this.localStorageService.setItem('expenses', expenses);
     });
   }
@@ -73,20 +73,26 @@ export class BudgetService {
     });
   }
 
-  removeExpense(expense: IExpense): void {
-    this.expenses = this.expenses.filter((e) =>
-      e.expenseId !== expense.expenseId
-        ? expense
-        : ({ ...expense, budgetId: UNCATEGORIZED_BUDGET_ID } as IExpense)
-    );
+  removeExpenseById(id: string): void {
+    this.expenses = this.expenses.filter((expense) => expense.id !== id);
   }
 
   getBudgets(): IBudget[] {
     return this.budgets;
   }
 
+  trackAllBudgets(): Observable<IBudget[]> {
+    return this.$budgets.pipe(map((budgets) => budgets));
+  }
+
   getBudgetExpenses(id: string): IExpense[] {
     return this.expenses.filter((expense) => expense.budgetId === id);
+  }
+
+  trackAllExpensesByBudgetId(id: string): Observable<IExpense[]> {
+    return this.$expenses.pipe(
+      map((expenses) => expenses.filter((expense) => expense.budgetId === id))
+    );
   }
 
   getBudgetById(id: string): IBudget | undefined {
